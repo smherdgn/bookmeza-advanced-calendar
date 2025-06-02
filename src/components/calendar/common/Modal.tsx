@@ -1,12 +1,12 @@
 
 import React, { ReactNode } from 'react';
 import { useTheme } from '../theme/ThemeContext';
-// import { useTranslation } from 'react-i18next'; // i18n removed
+import { useTranslation } from 'react-i18next';
 
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
-  title: string; 
+  title: string; // Title will be passed already translated
   children: ReactNode;
   footer?: ReactNode;
   size?: 'sm' | 'md' | 'lg' | 'xl' | 'full'; // Added 'full' for mobile
@@ -14,7 +14,7 @@ interface ModalProps {
 
 const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children, footer, size = 'md' }) => {
   const { theme, mode } = useTheme();
-  // const { t } = useTranslation(); // i18n removed
+  const { t } = useTranslation();
 
   if (!isOpen) return null;
 
@@ -47,7 +47,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children, footer,
           <button
             onClick={onClose}
             className={`text-${theme.colors.textSecondary} hover:text-${theme.colors.textPrimary} p-1 rounded-full hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors`}
-            aria-label="Close" // i18n removed
+            aria-label={t('common.close')}
             data-testid="modal-close-button"
           >
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6">

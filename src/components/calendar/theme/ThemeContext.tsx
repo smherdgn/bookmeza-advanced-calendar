@@ -1,6 +1,7 @@
+
 import React, { createContext, useContext, useState, useMemo, ReactNode } from 'react';
-import { Theme } from '@/types';
-import { lightTheme, darkTheme } from '@/constants';
+import { Theme } from '../../../types';
+import { lightTheme, darkTheme } from '../../../constants';
 
 interface ThemeContextType {
   theme: Theme;
@@ -25,12 +26,10 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
   
   const theme = useMemo(() => (mode === 'light' ? lightTheme : darkTheme), [mode]);
 
-  // Effect to set initial theme class on html element for Tailwind's dark mode
+  // Effect to set initial theme class on html element
   React.useEffect(() => {
     if (typeof window !== 'undefined') {
       document.documentElement.classList.toggle('dark', mode === 'dark');
-      // The AppContent component in App.tsx will handle body background styling
-      // based on the theme mode using Tailwind classes or appropriate CSS variables if needed.
     }
   }, [mode]);
 

@@ -1,7 +1,7 @@
 
 import React from 'react';
-import { Appointment, CalendarView, DraggableAppointment, Staff, Service } from '@/types';
-import { useTheme } from '@/components/calendar/theme/ThemeContext';
+import { Appointment, CalendarView, DraggableAppointment, Staff, Service } from '../../types';
+import { useTheme } from './theme/ThemeContext';
 import { 
   getMonthGridDays, 
   getWeekDates, 
@@ -10,10 +10,10 @@ import {
   formatTime,
   weekDayNames,
   formatDate
-} from '@/components/calendar/hooks/useCalendarUtils';
-import AppointmentCard from '@/components/calendar/AppointmentCard';
-import { HOUR_HEIGHT_PX } from '@/constants';
-// import { useTranslation } from 'react-i18next'; // i18n removed
+} from './hooks/useCalendarUtils';
+import AppointmentCard from './AppointmentCard';
+import { HOUR_HEIGHT_PX } from '../../constants';
+import { useTranslation } from 'react-i18next';
 
 interface CalendarGridProps {
   currentDate: Date;
@@ -39,12 +39,11 @@ const CalendarGrid: React.FC<CalendarGridProps> = ({
   isMobile
 }) => {
   const { theme, mode } = useTheme();
-  // const { t, i18n } = useTranslation(); // i18n removed
-  // const currentLang = i18n.language; // i18n removed
-  const currentLang = navigator.language || 'en'; // Default to browser language or English
-  const weekStartsOn: 0 | 1 = 1; // Default to Monday
+  const { t, i18n } = useTranslation();
+  const currentLang = i18n.language;
+  const weekStartsOn: 0 | 1 = currentLang === 'tr' ? 1 : 1; // Monday for TR, (could be 0 for Sunday for US English if needed)
 
-  const [_draggedAppointment, setDraggedAppointment] = React.useState<DraggableAppointment | null>(null);
+  const [_draggedAppointment, setDraggedAppointment] = React.useState<DraggableAppointment | null>(null); // Renamed to avoid conflict
 
   const handleDragStartInternal = (e: React.DragEvent<HTMLDivElement>, appointmentId: string, start: Date, end: Date) => {
     const draggableData: DraggableAppointment = { id: appointmentId, originalStart: start.toISOString(), originalEnd: end.toISOString() };
@@ -116,7 +115,7 @@ const CalendarGrid: React.FC<CalendarGridProps> = ({
                   <AppointmentCard key={appt.id} appointment={appt} onClick={() => onAppointmentClick(appt)} view="month" isDraggable onDragStart={handleDragStartInternal}/>
                 ))}
                 {appointmentsOnDay.length > 2 && (
-                    <div className={`text-xs text-center text-${theme.colors.textSecondary} mt-1 p-0.5 bg-slate-100 dark:bg-slate-700 rounded`}>{`+ ${appointmentsOnDay.length - 2} more`}</div>
+                    <div className={`text-xs text-center text-${theme.colors.textSecondary} mt-1 p-0.5 bg-slate-100 dark:bg-slate-700 rounded`}>{t('calendar.grid.more', {count: appointmentsOnDay.length - 2})}</div>
                 )}
               </div>
             </div>
@@ -185,7 +184,7 @@ const CalendarGrid: React.FC<CalendarGridProps> = ({
                             onDrop={(e) => handleDropOnSlot(e, slotStartDateTime)}
                             data-testid={`${viewType}-slot-${day.toISOString().split('T')[0]}-${slotIndex}`}
                             role="button"
-                            aria-label={`Create new appointment at ${formatDate(day, currentLang)} ${slotIndex.toString().padStart(2, '0')}:00`}
+                            aria-label={t('calendar.grid.createAppointmentAt', { date: formatDate(day, currentLang), time: `${slotIndex.toString().padStart(2, '0')}:00` })}
                         >
                           {[15, 30, 45].map(min => (
                             <div key={min} className={`h-px bg-${theme.colors.border} bg-opacity-20 group-hover:bg-opacity-40`} style={{marginTop: `${(min/60)*HOUR_HEIGHT_PX -1}px`}}></div>
@@ -232,8 +231,8 @@ const CalendarGrid: React.FC<CalendarGridProps> = ({
             <svg className="mx-auto h-10 w-10 md:h-12 md:w-12 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
               <path vectorEffect="non-scaling-stroke" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
             </svg>
-            <h3 className={`mt-2 text-base md:text-lg font-medium text-${theme.colors.textPrimary}`}>No appointments</h3>
-            <p className={`mt-1 text-sm text-${theme.colors.textSecondary}`}>There are no appointments scheduled for this period.</p>
+            <h3 className={`mt-2 text-base md:text-lg font-medium text-${theme.colors.textPrimary}`}>{t('calendar.noAppointments')}</h3>
+            <p className={`mt-1 text-sm text-${theme.colors.textSecondary}`}>{t('calendar.noAppointmentsPeriod')}</p>
           </div>
         )}
         {Object.keys(groupedAppointments).map(dateKey => (
@@ -271,7 +270,7 @@ const CalendarGrid: React.FC<CalendarGridProps> = ({
     case 'agenda':
       return renderAgendaView();
     default:
-      return <div className={`text-${theme.colors.textPrimary} p-5`}>Day View {/* Fallback or error message */}</div>;
+      return <div className={`text-${theme.colors.textPrimary} p-5`}>{t('calendar.view.day')} {/* Fallback or error message */}</div>;
   }
 };
 

@@ -1,14 +1,14 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
-import { Appointment, AppointmentStatus, Staff, Service, Customer } from '@/types';
-import { DEFAULT_TENANT_ID, APPOINTMENT_STATUS_DISPLAY, MOCK_STAFF, MOCK_SERVICES } from '@/constants'; // Added MOCK_STAFF, MOCK_SERVICES
-import { useConflictCheck } from '@/components/calendar/hooks/useConflictCheck';
-import { addMinutes, isBefore } from '@/components/calendar/hooks/useCalendarUtils';
-import Modal from '@/components/calendar/common/Modal';
-import Button from '@/components/calendar/common/Button';
-import Select from '@/components/calendar/common/Select';
-import { useTheme } from '@/components/calendar/theme/ThemeContext';
-// import { useTranslation } from 'react-i18next'; // i18n removed
+import { Appointment, AppointmentStatus, Staff, Service, Customer } from '../../types';
+import { DEFAULT_TENANT_ID } from '../../constants';
+import { useConflictCheck } from './hooks/useConflictCheck';
+import { addMinutes, isBefore, formatTime } from './hooks/useCalendarUtils';
+import Modal from './common/Modal';
+import Button from './common/Button';
+import Select from './common/Select';
+import { useTheme } from './theme/ThemeContext';
+import { useTranslation } from 'react-i18next';
 
 interface AppointmentModalProps {
   isOpen: boolean;
@@ -58,7 +58,7 @@ const AppointmentModal: React.FC<AppointmentModalProps> = ({
   customerList
 }) => {
   const { theme } = useTheme();
-  // const { t, i18n } = useTranslation(); // i18n removed
+  const { t, i18n } = useTranslation();
   const [formData, setFormData] = useState<Partial<Appointment>>({});
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isLoading, setIsLoading] = useState(false);
@@ -84,7 +84,7 @@ const AppointmentModal: React.FC<AppointmentModalProps> = ({
         end: defaultEndTime,
         staffId: staffList.length > 0 ? staffList[0].id : undefined,
         serviceId: defaultService?.id,
-        customerId: customerList.length > 0 ? customerList[0].id : undefined,
+        customerId: customerList.length > 0 ? customerList[0].id : undefined, // Default to first customer for demo
         status: AppointmentStatus.PENDING,
         notes: '',
         tenantId: DEFAULT_TENANT_ID,
@@ -117,7 +117,7 @@ const AppointmentModal: React.FC<AppointmentModalProps> = ({
             newStart.setFullYear(year, month - 1, day);
          } else if (name === 'startTime' && value && formData.start) {
             const [hours, minutes] = value.split(':').map(Number);
-            newStart = new Date(formData.start); 
+            newStart = new Date(formData.start); // Ensure it's a new Date object
             newStart.setHours(hours, minutes, 0, 0);
          }
         if (selectedService) {
@@ -151,7 +151,7 @@ const AppointmentModal: React.FC<AppointmentModalProps> = ({
         if (selectedService) {
             setFormData(prev => ({ ...prev, start: newStart, end: addMinutes(newStart, selectedService.duration) }));
         } else {
-             setFormData(prev => ({ ...prev, start: newStart, end: newEnd })); 
+             setFormData(prev => ({ ...prev, start: newStart, end: newEnd })); // Update both if no service to link duration
         }
     } else {
         setFormData(prev => ({ ...prev, start: newStart, end: newEnd }));
@@ -161,14 +161,14 @@ const AppointmentModal: React.FC<AppointmentModalProps> = ({
 
   const validate = (): boolean => {
     const newErrors: Record<string, string> = {};
-    if (!formData.title?.trim() && !formData.serviceId) newErrors.title = "Title or Service is required";
-    if (!formData.start) newErrors.start = "Start time is required";
-    if (!formData.end) newErrors.end = "End time is required";
+    if (!formData.title?.trim() && !formData.serviceId) newErrors.title = t('appointment.validation.titleOrServiceRequired');
+    if (!formData.start) newErrors.start = t('appointment.validation.startRequired');
+    if (!formData.end) newErrors.end = t('appointment.validation.endRequired');
     if (formData.start && formData.end && isBefore(new Date(formData.end), new Date(formData.start))) {
-      newErrors.end = "End time cannot be before start time";
+      newErrors.end = t('appointment.validation.endBeforeStart');
     }
-    if (!formData.staffId) newErrors.staffId = "Staff is required";
-    if (!formData.serviceId) newErrors.serviceId = "Service is required";
+    if (!formData.staffId) newErrors.staffId = t('appointment.validation.staffRequired');
+    if (!formData.serviceId) newErrors.serviceId = t('appointment.validation.serviceRequired');
 
     if (formData.start && formData.end && formData.staffId) {
         const conflictCheckData = {
@@ -178,7 +178,7 @@ const AppointmentModal: React.FC<AppointmentModalProps> = ({
             staffId: formData.staffId
         };
         if (useConflictCheck(conflictCheckData, existingAppointments)) {
-            newErrors.conflict = "This time slot conflicts with another appointment for this staff member.";
+            newErrors.conflict = t('appointment.validation.conflict');
         }
     }
     
@@ -196,7 +196,7 @@ const AppointmentModal: React.FC<AppointmentModalProps> = ({
       onClose();
     } catch (error) {
       console.error("Failed to save appointment", error);
-      setErrors(prev => ({ ...prev, submit: "Failed to save appointment. Please try again."}));
+      setErrors(prev => ({ ...prev, submit: t('appointment.validation.submitFailed')}));
     } finally {
       setIsLoading(false);
     }
@@ -204,14 +204,14 @@ const AppointmentModal: React.FC<AppointmentModalProps> = ({
   
   const handleDelete = async () => {
     if (currentAppointment?.id && onDelete) {
-        if (window.confirm("Are you sure you want to delete this appointment?")) { 
+        if (window.confirm(t('appointment.deleteConfirmation'))) { // Simple confirmation
             setIsLoading(true);
             try {
                 await onDelete(currentAppointment.id);
                 onClose();
             } catch (error) {
                 console.error("Failed to delete appointment", error);
-                setErrors(prev => ({ ...prev, submit: "Failed to delete appointment. Please try again."}));
+                setErrors(prev => ({ ...prev, submit: t('appointment.deleteFailed')}));
             } finally {
                 setIsLoading(false);
             }
@@ -230,14 +230,12 @@ const AppointmentModal: React.FC<AppointmentModalProps> = ({
     return `${d.getHours().toString().padStart(2, '0')}:${d.getMinutes().toString().padStart(2, '0')}`;
   }
 
-  const modalTitle = isEditing ? "Edit Appointment" : "New Appointment";
-
   return (
-    <Modal isOpen={isOpen} onClose={onClose} title={modalTitle} size="lg" data-testid="appointment-modal">
+    <Modal isOpen={isOpen} onClose={onClose} title={isEditing ? t('appointment.editTitle') : t('appointment.newTitle')} size="lg" data-testid="appointment-modal">
       <form onSubmit={handleSubmit} data-testid="appointment-form" className="space-y-5 md:space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 md:gap-x-6 gap-y-4 md:gap-y-5">
           <InputField
-            label="Title (Optional)"
+            label={t('appointment.titleLabel')}
             type="text"
             name="title"
             id="title"
@@ -248,38 +246,38 @@ const AppointmentModal: React.FC<AppointmentModalProps> = ({
             data-testid="appointment-title-input"
           />
           <Select
-            label="Service *"
+            label={t('appointment.serviceLabel')}
             name="serviceId"
             id="serviceId"
-            options={serviceList.map(s => ({ value: s.id, label: `${s.name} (${s.duration} min)` }))}
+            options={serviceList.map(s => ({ value: s.id, label: `${t(`mock.services.${s.id}.name`, s.name)} (${s.duration} min)` }))}
             value={formData.serviceId || ''}
             onChange={handleChange}
             error={errors.serviceId}
             data-testid="appointment-service-select"
           />
           <Select
-            label="Staff *"
+            label={t('appointment.staffLabel')}
             name="staffId"
             id="staffId"
-            options={staffList.map(s => ({ value: s.id, label: s.name }))}
+            options={staffList.map(s => ({ value: s.id, label: t(`mock.staff.${s.id}.name`, s.name) }))}
             value={formData.staffId || ''}
             onChange={handleChange}
             error={errors.staffId}
             data-testid="appointment-staff-select"
           />
            <Select
-            label="Customer (Optional)"
+            label={t('appointment.customerLabel')}
             name="customerId"
             id="customerId"
-            options={[{value: '', label: "None"}, ...customerList.map(c => ({ value: c.id, label: c.name }))]}
+            options={[{value: '', label: t('common.none')}, ...customerList.map(c => ({ value: c.id, label: c.name }))]}
             value={formData.customerId || ''}
             onChange={handleChange}
-            placeholder="Select Customer"
+            placeholder={t('appointment.selectCustomerPlaceholder')}
             data-testid="appointment-customer-select"
           />
 
           <InputField
-              label="Date *"
+              label={t('appointment.dateLabel')}
               type="date"
               name="startDate"
               id="startDate"
@@ -292,7 +290,7 @@ const AppointmentModal: React.FC<AppointmentModalProps> = ({
             />
           <div className="grid grid-cols-2 gap-x-2 md:gap-x-4">
              <InputField
-                label="Start Time *"
+                label={t('appointment.startTimeLabel')}
                 type="time"
                 name="startTime"
                 id="startTime"
@@ -305,7 +303,7 @@ const AppointmentModal: React.FC<AppointmentModalProps> = ({
                 data-testid="appointment-start-time-input"
                 />
             <InputField
-                label="End Time *"
+                label={t('appointment.endTimeLabel')}
                 type="time"
                 name="endTime"
                 id="endTime"
@@ -320,10 +318,10 @@ const AppointmentModal: React.FC<AppointmentModalProps> = ({
           </div>
           <div className="md:col-span-2">
             <Select
-                label="Status *"
+                label={t('appointment.statusLabel')}
                 name="status"
                 id="status"
-                options={Object.entries(APPOINTMENT_STATUS_DISPLAY).map(([sKey, sLabel]) => ({ value: sKey, label: sLabel }))}
+                options={Object.values(AppointmentStatus).map(s => ({ value: s, label: t(`appointment.status.${s}`) }))}
                 value={formData.status || ''}
                 onChange={handleChange}
                 error={errors.status}
@@ -332,7 +330,7 @@ const AppointmentModal: React.FC<AppointmentModalProps> = ({
           </div>
         </div>
         <TextAreaField
-            label="Notes (Optional)"
+            label={t('appointment.notesLabel')}
             name="notes"
             id="notes"
             rows={3}
@@ -346,15 +344,15 @@ const AppointmentModal: React.FC<AppointmentModalProps> = ({
         
         <div className="mt-6 md:mt-8 flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-3 space-y-2 sm:space-y-0">
           <Button type="button" variant="secondary" onClick={onClose} disabled={isLoading} data-testid="appointment-cancel-button" className="w-full sm:w-auto">
-            Cancel
+            {t('common.cancel')}
           </Button>
           {isEditing && onDelete && (
              <Button type="button" variant="danger" onClick={handleDelete} disabled={isLoading} data-testid="appointment-delete-button" className="w-full sm:w-auto">
-                {isLoading ? "Deleting..." : "Delete"}
+                {isLoading ? t('common.deleting') : t('common.delete')}
              </Button>
           )}
           <Button type="submit" variant="primary" disabled={isLoading} data-testid="appointment-save-button" className="w-full sm:w-auto">
-            {isLoading ? "Saving..." : (isEditing ? "Save Changes" : "Create")}
+            {isLoading ? t('common.saving') : (isEditing ? t('common.saveChanges') : t('common.create'))}
           </Button>
         </div>
       </form>

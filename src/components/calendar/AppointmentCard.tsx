@@ -1,11 +1,12 @@
 
 import React from 'react';
-import { Appointment, Staff, Service, DraggableAppointment } from '@/types';
-import { APPOINTMENT_STATUS_COLORS, MOCK_STAFF, MOCK_SERVICES, APPOINTMENT_STATUS_DISPLAY } from '@/constants';
-import { formatTime } from '@/components/calendar/hooks/useCalendarUtils';
-import Tooltip from '@/components/calendar/common/Tooltip';
-import { useTheme } from '@/components/calendar/theme/ThemeContext';
-// import { useTranslation } from 'react-i18next'; // i18n removed
+import { Appointment, Staff, Service, DraggableAppointment } from '../../types';
+import { APPOINTMENT_STATUS_COLORS, MOCK_STAFF, MOCK_SERVICES } from '../../constants';
+import { formatTime } from './hooks/useCalendarUtils';
+import Tooltip from './common/Tooltip';
+import { useTheme } from './theme/ThemeContext';
+import { useTranslation }
+ from 'react-i18next';
 
 interface AppointmentCardProps {
   appointment: Appointment;
@@ -17,19 +18,19 @@ interface AppointmentCardProps {
 
 const AppointmentCard: React.FC<AppointmentCardProps> = ({ appointment, onClick, view, isDraggable = false, onDragStart }) => {
   const { theme } = useTheme();
-  // const { t, i18n } = useTranslation(); // i18n removed
+  const { t, i18n } = useTranslation();
 
   const staff = MOCK_STAFF.find(s => s.id === appointment.staffId);
   const service = MOCK_SERVICES.find(s => s.id === appointment.serviceId);
   
   const statusTheme = APPOINTMENT_STATUS_COLORS[appointment.status] || APPOINTMENT_STATUS_COLORS.pending;
 
-  const staffName = staff ? staff.name : '';
-  const serviceName = service ? service.name : '';
+  const translatedStaffName = staff ? t(`mock.staff.${staff.id}.name`, staff.name) : '';
+  const translatedServiceName = service ? t(`mock.services.${service.id}.name`, service.name) : '';
 
-  const title = appointment.title || serviceName || "New Appointment"; // Fallback title
-  const timeText = `${formatTime(appointment.start, navigator.language)} - ${formatTime(appointment.end, navigator.language)}`;
-  const statusDisplay = APPOINTMENT_STATUS_DISPLAY[appointment.status];
+  const title = appointment.title || translatedServiceName || t('appointment.newTitle'); // Fallback title
+  const timeText = `${formatTime(appointment.start, i18n.language)} - ${formatTime(appointment.end, i18n.language)}`;
+  const statusDisplay = t(`appointment.status.${appointment.status}`);
 
   const handleDragStart = (e: React.DragEvent<HTMLDivElement>) => {
     if (onDragStart) {
@@ -45,7 +46,7 @@ const AppointmentCard: React.FC<AppointmentCardProps> = ({ appointment, onClick,
     <div className={`p-1.5 ${statusTheme.bg} overflow-hidden`}>
       <p className={`font-semibold text-xs ${statusTheme.text} truncate`} title={title}>{title}</p>
       <p className={`text-xs ${statusTheme.text} opacity-90`}>{timeText}</p>
-      {view !== 'month' && staff && <p className={`text-xs ${statusTheme.text} opacity-70 truncate`} title={staffName}>w/ {staffName}</p>}
+      {view !== 'month' && staff && <p className={`text-xs ${statusTheme.text} opacity-70 truncate`} title={translatedStaffName}>w/ {translatedStaffName}</p>}
     </div>
   );
   
@@ -54,9 +55,9 @@ const AppointmentCard: React.FC<AppointmentCardProps> = ({ appointment, onClick,
       <p className="font-bold">{title}</p>
       <hr className="my-1 border-slate-500"/>
       <p>{timeText}</p>
-      {staff && <p>{`Staff: ${staffName}`}</p>}
-      {service && <p>{`Service: ${serviceName} (${service.duration} min)`}</p>}
-      <p>{`Status: ${statusDisplay}`}</p>
+      {staff && <p>{t('appointment.cardTooltip.staff', {name: translatedStaffName})}</p>}
+      {service && <p>{t('appointment.cardTooltip.service', {name: translatedServiceName, duration: service.duration})}</p>}
+      <p>{t('appointment.cardTooltip.status', {status: statusDisplay})}</p>
     </div>
   );
 
@@ -72,7 +73,7 @@ const AppointmentCard: React.FC<AppointmentCardProps> = ({ appointment, onClick,
         <div className="flex-grow overflow-hidden">
           <p className={`font-semibold ${statusTheme.text} truncate`}>{title}</p>
           <p className={`text-sm ${statusTheme.text}`}>{timeText}</p>
-          {staff && <p className={`text-xs ${statusTheme.text} opacity-80 truncate`}>{`Staff: ${staffName}`}</p>}
+          {staff && <p className={`text-xs ${statusTheme.text} opacity-80 truncate`}>{t('appointment.cardTooltip.staff', {name: translatedStaffName})}</p>}
         </div>
         <div className={`text-xs px-2.5 py-1 ${statusTheme.text} ${statusTheme.bg.replace('50', '200')} ${theme.borderRadius.small} font-medium ml-2 flex-shrink-0`}>
           {statusDisplay.toUpperCase()}
@@ -92,7 +93,7 @@ const AppointmentCard: React.FC<AppointmentCardProps> = ({ appointment, onClick,
                     ${isDraggable ? 'cursor-grab' : ''}
                     ${view === 'month' ? `m-0.5 text-xs ${statusTheme.bg}` : `absolute w-full ${statusTheme.bg}`}`}
         style={ view === 'month' ? {} : getPositionStyle(appointment.start, appointment.end)}
-        aria-label={`Edit Appointment: ${title} ${timeText}`}
+        aria-label={`${t('appointment.editTitle')}: ${title} ${timeText}`}
       >
         {cardContent}
       </div>
@@ -118,5 +119,6 @@ const getPositionStyle = (start: Date, end: Date): React.CSSProperties => {
     zIndex: 10,
   };
 };
+
 
 export default AppointmentCard;

@@ -1,24 +1,22 @@
 
 import React, { SelectHTMLAttributes } from 'react';
 import { useTheme } from '../theme/ThemeContext';
-// import { useTranslation } from 'react-i18next'; // i18n removed
+import { useTranslation } from 'react-i18next';
 
 interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
   label?: string;
-  options: { value: string | number; label: string }[];
+  options: { value: string | number; label: string }[]; // Label will be passed already translated for dynamic options
   error?: string;
-  placeholder?: string; 
-  // placeholderKey?: string; // i18n removed
+  placeholder?: string; // Will be passed as a translation key or already translated string
+  placeholderKey?: string; // Alternative: pass a translation key for the placeholder
 }
 
-const Select: React.FC<SelectProps> = ({ label, options, id, className, error, placeholder, /* placeholderKey, */ ...props }) => {
+const Select: React.FC<SelectProps> = ({ label, options, id, className, error, placeholder, placeholderKey, ...props }) => {
   const { theme } = useTheme();
-  // const { t } = useTranslation(); // i18n removed
+  const { t } = useTranslation();
   const selectId = id || `select-${Math.random().toString(36).substring(7)}`;
 
-  // const displayPlaceholder = placeholderKey ? t(placeholderKey) : placeholder; // i18n removed
-  const displayPlaceholder = placeholder;
-
+  const displayPlaceholder = placeholderKey ? t(placeholderKey) : placeholder;
 
   return (
     <div className="w-full">

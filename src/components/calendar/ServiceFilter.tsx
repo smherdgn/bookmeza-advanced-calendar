@@ -1,9 +1,9 @@
 
 import React from 'react';
-import { Service } from '@/types';
-import Select from '@/components/calendar/common/Select';
-import { useTheme } from '@/components/calendar/theme/ThemeContext';
-// import { useTranslation } from 'react-i18next'; // i18n removed
+import { Service } from '../../types';
+import Select from './common/Select';
+import { useTheme } from './theme/ThemeContext';
+import { useTranslation } from 'react-i18next';
 
 interface ServiceFilterProps {
   serviceList: Service[];
@@ -14,11 +14,11 @@ interface ServiceFilterProps {
 
 const ServiceFilter: React.FC<ServiceFilterProps> = ({ serviceList, selectedServiceId, onServiceChange, className }) => {
   const { theme } = useTheme();
-  // const { t } = useTranslation(); // i18n removed
+  const { t } = useTranslation();
 
   const options = [
-    { value: '', label: "All Services" }, // Hardcoded English
-    ...serviceList.map(service => ({ value: service.id, label: service.name }))
+    { value: '', label: t('calendar.filters.allServices') },
+    ...serviceList.map(service => ({ value: service.id, label: t(`mock.services.${service.id}.name`, service.name) })) // Fallback to service.name
   ];
 
   return (
@@ -27,7 +27,7 @@ const ServiceFilter: React.FC<ServiceFilterProps> = ({ serviceList, selectedServ
         options={options}
         value={selectedServiceId || ''}
         onChange={(e) => onServiceChange(e.target.value || null)}
-        aria-label="Filter by service" // Hardcoded English
+        aria-label={t('calendar.filters.serviceAriaLabel')}
         className={`bg-${theme.colors.surface} text-${theme.colors.textPrimary} border-${theme.colors.border}`}
         data-testid="service-filter-select"
       />
