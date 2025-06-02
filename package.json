@@ -1,0 +1,25 @@
+{
+  "name": "bookmeza-advanced-calendar",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "react-i18next": "^15.5.2",
+    "i18next": "^25.2.1",
+    "vite": "^6.3.5",
+    "@vitejs/plugin-react": "^4.5.0",
+    "path": "^0.12.7"
+  },
+  "devDependencies": {
+    "@types/node": "^22.14.0",
+    "typescript": "~5.7.2",
+    "vite": "^6.2.0"
+  }
+}

@@ -1,0 +1,112 @@
+{
+  "calendar": {
+    "title": "Takvim",
+    "newEvent": "Yeni Etkinlik",
+    "today": "Bugün",
+    "loading": "Randevular yükleniyor...",
+    "errorLoading": "Takvim verileri yüklenemedi. Lütfen tekrar deneyin.",
+    "errorSaving": "Randevu kaydedilemedi.",
+    "errorDeleting": "Randevu silinemedi.",
+    "errorUpdateDrop": "Randevu güncellenemedi.",
+    "noAppointments": "Randevu yok",
+    "noAppointmentsPeriod": "Bu dönem için planlanmış randevu bulunmamaktadır.",
+    "view": {
+      "day": "Gün",
+      "week": "Hafta",
+      "month": "Ay",
+      "agenda": "Ajanda"
+    },
+    "filters": {
+        "allStaff": "Tüm Personel",
+        "allServices": "Tüm Servisler",
+        "staffAriaLabel": "Personele göre filtrele",
+        "serviceAriaLabel": "Servise göre filtrele"
+    },
+    "navigation": {
+        "prevPeriod": "Önceki dönem",
+        "nextPeriod": "Sonraki dönem",
+        "selectDate": "Tarih seç"
+    },
+    "grid": {
+        "more": "+ {{count}} tane daha",
+        "createAppointmentAt": "{{date}} {{time}} için yeni randevu oluştur"
+    }
+  },
+  "appointment": {
+    "newTitle": "Yeni Randevu",
+    "editTitle": "Randevuyu Düzenle",
+    "titleLabel": "Başlık (İsteğe Bağlı)",
+    "serviceLabel": "Servis *",
+    "staffLabel": "Personel *",
+    "customerLabel": "Müşteri (İsteğe Bağlı)",
+    "selectCustomerPlaceholder": "Müşteri Seçin",
+    "dateLabel": "Tarih *",
+    "startTimeLabel": "Başlangıç Saati *",
+    "endTimeLabel": "Bitiş Saati *",
+    "statusLabel": "Durum *",
+    "notesLabel": "Notlar (İsteğe Bağlı)",
+    "status": {
+      "confirmed": "Onaylandı",
+      "pending": "Beklemede",
+      "cancelled": "İptal Edildi",
+      "completed": "Tamamlandı",
+      "no-show": "Gelmedi"
+    },
+    "validation": {
+      "titleOrServiceRequired": "Başlık veya Servis gerekli",
+      "startRequired": "Başlangıç saati gerekli",
+      "endRequired": "Bitiş saati gerekli",
+      "endBeforeStart": "Bitiş saati başlangıç saatinden önce olamaz",
+      "staffRequired": "Personel gerekli",
+      "serviceRequired": "Servis gerekli",
+      "conflict": "Bu zaman aralığı, bu personel için başka bir randevuyla çakışıyor.",
+      "submitFailed": "Randevu kaydedilemedi. Lütfen tekrar deneyin."
+    },
+    "deleteFailed": "Randevu silinemedi. Lütfen tekrar deneyin.",
+    "cardTooltip": {
+        "staff": "Personel: {{name}}",
+        "service": "Servis: {{name}} ({{duration}} dk)",
+        "status": "Durum: {{status}}"
+    },
+    "deleteConfirmation": "Bu randevuyu silmek istediğinizden emin misiniz?"
+  },
+  "common": {
+    "save": "Kaydet",
+    "saveChanges": "Değişiklikleri Kaydet",
+    "create": "Oluştur",
+    "cancel": "İptal",
+    "delete": "Sil",
+    "saving": "Kaydediliyor...",
+    "deleting": "Siliniyor...",
+    "close": "Kapat",
+    "none": "Yok"
+  },
+  "app": {
+    "themeToggle": "{{mode}} Moduna Geç",
+    "switchToLightMode": "Aydınlık Mod",
+    "switchToDarkMode": "Karanlık Mod",
+    "userRoleLabel": "Kullanıcı Rolü:",
+    "roles": {
+      "admin": "Yönetici",
+      "staff": "Personel",
+      "owner": "Sahip"
+    },
+    "languageLabel": "Dil:",
+    "languages": {
+        "en": "English",
+        "tr": "Türkçe"
+    }
+  },
+  "mock": {
+    "staff": {
+        "staff-1": { "name": "Dr. Emily Carter" },
+        "staff-2": { "name": "John Davis" },
+        "staff-3": { "name": "Sarah Miller" }
+    },
+    "services": {
+        "service-1": { "name": "Danışmanlık" },
+        "service-2": { "name": "Kontrol" },
+        "service-3": { "name": "Terapi Seansı" }
+    }
+  }
+}

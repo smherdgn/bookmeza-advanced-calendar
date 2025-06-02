@@ -1,0 +1,43 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Global styles previously in index.html */
+body {
+  font-family: 'Inter', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  /* Base background and text colors will be applied by App.tsx or ThemeProvider */
+}
+
+/* Custom scrollbar for better aesthetics - can be themed further */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent; /* Match theme background */
+}
+::-webkit-scrollbar-thumb {
+  background: #94a3b8; /* slate-400 */
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #64748b; /* slate-500 */
+}
+html.dark ::-webkit-scrollbar-thumb {
+  background: #475569; /* slate-600 */
+}
+html.dark ::-webkit-scrollbar-thumb:hover {
+  background: #334155; /* slate-700 */
+}
+
+/* For Modal animation, if not handled by Tailwind JIT or external CSS */
+/* Tailwind's animation utility should pick this up from tailwind.config.js */
+/*
+@layer utilities {
+  .animate-modalShow {
+    animation: modalShowAnimation 0.2s ease-out forwards;
+  }
+}
+*/

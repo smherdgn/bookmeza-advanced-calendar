@@ -1,0 +1,112 @@
+{
+  "calendar": {
+    "title": "Calendar",
+    "newEvent": "New Event",
+    "today": "Today",
+    "loading": "Loading appointments...",
+    "errorLoading": "Failed to load calendar data. Please try again.",
+    "errorSaving": "Failed to save appointment.",
+    "errorDeleting": "Failed to delete appointment.",
+    "errorUpdateDrop": "Failed to update appointment.",
+    "noAppointments": "No appointments",
+    "noAppointmentsPeriod": "There are no appointments scheduled for this period.",
+    "view": {
+      "day": "Day",
+      "week": "Week",
+      "month": "Month",
+      "agenda": "Agenda"
+    },
+    "filters": {
+        "allStaff": "All Staff",
+        "allServices": "All Services",
+        "staffAriaLabel": "Filter by staff",
+        "serviceAriaLabel": "Filter by service"
+    },
+    "navigation": {
+        "prevPeriod": "Previous period",
+        "nextPeriod": "Next period",
+        "selectDate": "Select date"
+    },
+    "grid": {
+        "more": "+ {{count}} more",
+        "createAppointmentAt": "Create new appointment at {{date}} {{time}}"
+    }
+  },
+  "appointment": {
+    "newTitle": "New Appointment",
+    "editTitle": "Edit Appointment",
+    "titleLabel": "Title (Optional)",
+    "serviceLabel": "Service *",
+    "staffLabel": "Staff *",
+    "customerLabel": "Customer (Optional)",
+    "selectCustomerPlaceholder": "Select Customer",
+    "dateLabel": "Date *",
+    "startTimeLabel": "Start Time *",
+    "endTimeLabel": "End Time *",
+    "statusLabel": "Status *",
+    "notesLabel": "Notes (Optional)",
+    "status": {
+      "confirmed": "Confirmed",
+      "pending": "Pending",
+      "cancelled": "Cancelled",
+      "completed": "Completed",
+      "no-show": "No Show"
+    },
+    "validation": {
+      "titleOrServiceRequired": "Title or Service is required",
+      "startRequired": "Start time is required",
+      "endRequired": "End time is required",
+      "endBeforeStart": "End time cannot be before start time",
+      "staffRequired": "Staff is required",
+      "serviceRequired": "Service is required",
+      "conflict": "This time slot conflicts with another appointment for this staff member.",
+      "submitFailed": "Failed to save appointment. Please try again."
+    },
+    "deleteFailed": "Failed to delete appointment. Please try again.",
+    "cardTooltip": {
+        "staff": "Staff: {{name}}",
+        "service": "Service: {{name}} ({{duration}} min)",
+        "status": "Status: {{status}}"
+    },
+    "deleteConfirmation": "Are you sure you want to delete this appointment?"
+  },
+  "common": {
+    "save": "Save",
+    "saveChanges": "Save Changes",
+    "create": "Create",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "saving": "Saving...",
+    "deleting": "Deleting...",
+    "close": "Close",
+    "none": "None"
+  },
+  "app": {
+    "themeToggle": "Switch to {{mode}} Mode",
+    "switchToLightMode": "Light Mode",
+    "switchToDarkMode": "Dark Mode",
+    "userRoleLabel": "User Role:",
+    "roles": {
+      "admin": "Admin",
+      "staff": "Staff",
+      "owner": "Owner"
+    },
+    "languageLabel": "Language:",
+    "languages": {
+        "en": "English",
+        "tr": "Türkçe"
+    }
+  },
+  "mock": {
+    "staff": {
+        "staff-1": { "name": "Dr. Emily Carter" },
+        "staff-2": { "name": "John Davis" },
+        "staff-3": { "name": "Sarah Miller" }
+    },
+    "services": {
+        "service-1": { "name": "Consultation" },
+        "service-2": { "name": "Check-up" },
+        "service-3": { "name": "Therapy Session" }
+    }
+  }
+}

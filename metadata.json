@@ -1,0 +1,5 @@
+{
+  "name": "Bookmeza Advanced Calendar",
+  "description": "A fully-featured, scalable calendar component for a multi-tenant booking SaaS platform. Handles complex booking scenarios, staff filtering, drag-and-drop rescheduling, conflict prevention, and theming.",
+  "requestFramePermissions": []
+}
