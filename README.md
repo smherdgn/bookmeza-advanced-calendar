@@ -61,7 +61,8 @@ You can then interact with the calendar:
 │   │       ├── StaffFilter.tsx
 │   │       └── hooks/       # Custom hooks (useCalendarUtils.ts, useConflictCheck.ts)
 │   ├── constants.ts         # Mock data, theme definitions, app-wide constants
-│   ├── index.css            # Global styles and Tailwind directives
+│   ├── styles/
+│   │   └── index.css        # Global styles and Tailwind directives
 │   ├── index.tsx            # Main entry point for React application (renders App)
 │   ├── services/            # API service mocks (appointmentService.ts)
 │   └── types.ts             # TypeScript type definitions for the application
@@ -183,7 +184,7 @@ For applications with more complex global state requirements, integrating a dedi
 ## 🛠️ Troubleshooting
 
 *   **Tailwind CSS Not Applying:**
-    *   Ensure `src/index.css` (which contains `@tailwind base; @tailwind components; @tailwind utilities;`) is imported at the top of `src/index.tsx`.
+    *   Ensure `src/styles/index.css` (which contains `@tailwind base; @tailwind components; @tailwind utilities;`) is imported at the top of `src/index.tsx`.
     *   Verify the `content` array in `tailwind.config.js` correctly lists all file paths where you use Tailwind classes (e.g., `"./src/**/*.{js,ts,jsx,tsx}"`).
     *   Ensure the Vite development server is running and has processed your files.
 *   **General Issues:**
