@@ -1,11 +1,9 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
-import "./styles/index.css"; // CSS import removed as per prompt
-// import './i18n'; // i18n removed
+import "./i18n";
+import "./styles/index.css";
 
-// process.env.API_KEY is now handled by Vite's `define` config in vite.config.ts
-// but let's ensure it's available as per prompt expectation
 if (typeof process === "undefined") {
   // @ts-ignore
   globalThis.process = { env: {} };
@@ -19,7 +17,6 @@ if (!rootElement) {
 const root = ReactDOM.createRoot(rootElement);
 root.render(
   <React.StrictMode>
-    {/* Suspense for i18n removed */}
     <App />
   </React.StrictMode>
 );

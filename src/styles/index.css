@@ -1,3 +1,5 @@
+/* src/styles/index.css - Güncellenmiş versiyon */
+
 @import "@fontsource/inter/400.css";
 @import "@fontsource/inter/500.css";
 @import "@fontsource/inter/600.css";
@@ -6,44 +8,273 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-/* Rest of your CSS */
 
-/* Global styles previously in index.html */
+/* Global styles */
 body {
   font-family: "Inter", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  /* Base background and text colors will be applied by App.tsx or ThemeProvider */
 }
 
-/* Custom scrollbar for better aesthetics - can be themed further */
+/* ✅ Calendar Grid Düzeltmeleri */
+@layer components {
+  /* Calendar container */
+  .calendar-container {
+    @apply relative w-full h-full overflow-hidden;
+  }
+
+  /* Time grid alignment */
+  .time-grid {
+    @apply grid grid-cols-1 md:grid-cols-8 gap-0 h-full;
+  }
+
+  /* Time column (saatler) */
+  .time-column {
+    @apply flex flex-col border-r border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800;
+    width: 80px; /* Sabit genişlik */
+    min-width: 80px;
+  }
+
+  /* Time slot styling */
+  .time-slot {
+    @apply flex items-center justify-end pr-2 text-xs text-gray-600 dark:text-gray-400 border-b border-gray-100 dark:border-gray-700;
+    height: 60px; /* HOUR_HEIGHT_PX ile eşleş */
+    line-height: 1;
+  }
+
+  /* Day columns */
+  .day-column {
+    @apply relative flex-1 border-r border-gray-200 dark:border-gray-700 min-w-0;
+  }
+
+  /* Day header */
+  .day-header {
+    @apply sticky top-0 z-20 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 p-2 text-center font-medium;
+    height: 60px;
+  }
+
+  /* Hour slots in day view */
+  .hour-slot {
+    @apply relative border-b border-gray-100 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer;
+    height: 60px; /* HOUR_HEIGHT_PX */
+    min-height: 60px;
+  }
+
+  /* Appointment positioning */
+  .appointment-positioned {
+    @apply absolute left-1 right-1 rounded border-l-4 shadow-sm z-10;
+    min-height: 15px;
+  }
+}
+
+/* ✅ Modal Düzeltmeleri */
+@layer components {
+  .modal-overlay {
+    @apply fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4;
+  }
+
+  .modal-content {
+    @apply bg-white dark:bg-gray-800 rounded-lg shadow-xl w-full max-w-md max-h-[90vh] overflow-y-auto;
+  }
+
+  .modal-header {
+    @apply flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700;
+  }
+
+  .modal-body {
+    @apply p-4 space-y-4;
+  }
+
+  .modal-footer {
+    @apply flex items-center justify-end gap-2 p-4 border-t border-gray-200 dark:border-gray-700;
+  }
+
+  /* Form groups */
+  .form-group {
+    @apply space-y-1;
+  }
+
+  .form-label {
+    @apply block text-sm font-medium text-gray-700 dark:text-gray-300;
+  }
+
+  .form-input {
+    @apply w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm 
+           focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500
+           bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100;
+  }
+
+  .form-select {
+    @apply w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm 
+           focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500
+           bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 cursor-pointer;
+  }
+
+  .form-textarea {
+    @apply w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm 
+           focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500
+           bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 resize-none;
+    min-height: 80px;
+  }
+
+  /* Time input group */
+  .time-input-group {
+    @apply flex items-center gap-2;
+  }
+
+  .time-input {
+    @apply flex-1 px-2 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded 
+           focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500
+           bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100;
+  }
+}
+
+/* ✅ Responsive Düzeltmeleri */
+@layer utilities {
+  /* Mobile adjustments */
+  @media (max-width: 768px) {
+    .time-column {
+      width: 60px;
+      min-width: 60px;
+    }
+
+    .time-slot {
+      @apply text-xs pr-1;
+    }
+
+    .day-header {
+      @apply text-sm p-1;
+      height: 40px;
+    }
+
+    .hour-slot {
+      height: 50px;
+      min-height: 50px;
+    }
+
+    .modal-content {
+      @apply max-w-sm mx-2;
+    }
+
+    .form-input,
+    .form-select {
+      @apply text-sm py-1.5;
+    }
+
+    .time-input-group {
+      @apply flex-col gap-1;
+    }
+  }
+
+  /* Desktop improvements */
+  @media (min-width: 768px) {
+    .calendar-container {
+      @apply overflow-auto;
+    }
+
+    .modal-content {
+      @apply max-w-lg;
+    }
+  }
+}
+
+/* ✅ Appointment Card Düzeltmeleri */
+@layer components {
+  .appointment-card {
+    @apply relative p-2 rounded border-l-4 shadow-sm cursor-pointer transition-all duration-150;
+  }
+
+  .appointment-card:hover {
+    @apply shadow-md transform scale-[1.01];
+  }
+
+  /* Agenda view cards */
+  .appointment-agenda {
+    @apply flex items-center p-3 mb-2 rounded border-l-4 shadow-sm hover:shadow-md;
+  }
+
+  /* Month view cards */
+  .appointment-month {
+    @apply text-xs p-1 m-0.5 rounded border-l-2 truncate;
+  }
+}
+
+/* ✅ Loading ve Error States */
+@layer components {
+  .loading-spinner {
+    @apply animate-spin rounded-full border-2 border-gray-300 border-t-blue-600;
+  }
+
+  .error-message {
+    @apply p-4 text-center text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/20 
+           border border-red-200 dark:border-red-800 rounded-lg;
+  }
+}
+
+/* ✅ Header Düzeltmeleri */
+@layer components {
+  .calendar-header {
+    @apply flex flex-col sm:flex-row items-start sm:items-center justify-between 
+           gap-2 sm:gap-4 p-4 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700;
+  }
+
+  .header-controls {
+    @apply flex flex-wrap items-center gap-2;
+  }
+
+  .view-tabs {
+    @apply flex rounded-lg bg-gray-100 dark:bg-gray-700 p-1;
+  }
+
+  .view-tab {
+    @apply px-3 py-1 text-sm font-medium rounded-md transition-colors cursor-pointer;
+  }
+
+  .view-tab.active {
+    @apply bg-white dark:bg-gray-600 text-blue-600 dark:text-blue-400 shadow-sm;
+  }
+
+  .view-tab.inactive {
+    @apply text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200;
+  }
+}
+
+/* ✅ Filter Dropdown Düzeltmeleri */
+@layer components {
+  .filter-dropdown {
+    @apply relative;
+  }
+
+  .filter-select {
+    @apply appearance-none bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 
+           rounded-md px-3 py-2 pr-8 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 
+           focus:border-blue-500 cursor-pointer;
+  }
+
+  .filter-icon {
+    @apply absolute right-2 top-1/2 transform -translate-y-1/2 pointer-events-none 
+           text-gray-400 dark:text-gray-500;
+  }
+}
+
+/* Custom scrollbar for better aesthetics */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: transparent; /* Match theme background */
+  background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: #94a3b8; /* slate-400 */
+  background: #94a3b8;
   border-radius: 10px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #64748b; /* slate-500 */
+  background: #64748b;
 }
 html.dark ::-webkit-scrollbar-thumb {
-  background: #475569; /* slate-600 */
+  background: #475569;
 }
 html.dark ::-webkit-scrollbar-thumb:hover {
-  background: #334155; /* slate-700 */
+  background: #334155;
 }
-
-/* For Modal animation, if not handled by Tailwind JIT or external CSS */
-/* Tailwind's animation utility should pick this up from tailwind.config.js */
-/*
-@layer utilities {
-  .animate-modalShow {
-    animation: modalShowAnimation 0.2s ease-out forwards;
-  }
-}
-*/
