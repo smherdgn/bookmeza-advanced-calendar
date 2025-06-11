@@ -98,11 +98,9 @@ const AppointmentCard: React.FC<AppointmentCardProps> = ({
               className={`text-xs ${statusTheme.text} opacity-70 truncate`}
               title={translatedStaffName}
             >
-              {t(
-                "appointment.cardTooltip.staff",
-                { name: translatedStaffName },
-                `w/ ${translatedStaffName}`
-              )}
+              {t("appointment.cardTooltip.staff", `w/ ${translatedStaffName}`, {
+                name: translatedStaffName,
+              })}
             </p>
           )}
         </div>
@@ -146,28 +144,24 @@ const AppointmentCard: React.FC<AppointmentCardProps> = ({
       <p className="text-gray-700 dark:text-gray-300">{timeText}</p>
       {staff && (
         <p className="text-gray-600 dark:text-gray-400">
-          {t(
-            "appointment.cardTooltip.staff",
-            { name: translatedStaffName },
-            `Staff: ${translatedStaffName}`
-          )}
+          {t("appointment.cardTooltip.staff", `Staff: ${translatedStaffName}`, {
+            name: translatedStaffName,
+          })}
         </p>
       )}
       {service && (
         <p className="text-gray-600 dark:text-gray-400">
           {t(
             "appointment.cardTooltip.service",
-            { name: translatedServiceName, duration: service.duration },
-            `Service: ${translatedServiceName} (${service.duration} min)`
+            `Service: ${translatedServiceName} (${service.duration} min)`,
+            { name: translatedServiceName, duration: service.duration }
           )}
         </p>
       )}
       <p className="text-gray-600 dark:text-gray-400">
-        {t(
-          "appointment.cardTooltip.status",
-          { status: statusDisplay },
-          `Status: ${statusDisplay}`
-        )}
+        {t("appointment.cardTooltip.status", `Status: ${statusDisplay}`, {
+          status: statusDisplay,
+        })}
       </p>
     </div>
   );
